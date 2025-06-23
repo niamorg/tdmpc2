@@ -26,6 +26,7 @@ def make_env(cfg):
 
     env = gym.make(
         f"gym_lowcostrobot:{LOWCOSTROBOT_TASKS[cfg.task]}",
+        max_episode_steps=envcfg["max_episode_steps"],
         **envcfg["kwargs"],
         )
     

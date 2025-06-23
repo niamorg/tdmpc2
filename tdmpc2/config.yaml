@@ -7,10 +7,9 @@ residual: false
 lowcostrobot:
     robot_observation_mode: joint
     cube_vel: False
-    
-    kwargs:
-        max_episode_steps: 50
+    max_episode_steps: 50
 
+    kwargs:
         observation_mode: state
         action_mode: joint
         reward_type: dense
