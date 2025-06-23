@@ -25,8 +25,7 @@ def make_env(cfg):
     envcfg = cfg.lowcostrobot
 
     env = gym.make(
-        f"gym_lowcostrobot:{LOWCOSTROBOT_TASKS[cfg.task]}", 
-        render_mode='rgb_array',
+        f"gym_lowcostrobot:{LOWCOSTROBOT_TASKS[cfg.task]}",
         **envcfg["kwargs"],
         )
     

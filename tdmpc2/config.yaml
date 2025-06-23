@@ -20,7 +20,7 @@ lowcostrobot:
         cube_xy_range: 0.3
 
         n_substeps: 20
-        render_mode: null
+        render_mode: rgb_array
 
         # only for PushCube-v0
         target_xy_range: 0.3
