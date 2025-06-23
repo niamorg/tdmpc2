@@ -118,7 +118,11 @@ class WorldModel(nn.Module):
 		if self.cfg.multitask:
 			z = self.task_emb(z, task)
 		z = torch.cat([z, a], dim=-1)
-		return self._dynamics(z)
+
+		if self.cfg.residual:
+			return z + self._dynamics(z)
+		else:
+			return self._dynamics(z)
 
 	def reward(self, z, a, task):
 		"""

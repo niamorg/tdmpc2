@@ -1,8 +1,34 @@
 defaults:
     - override hydra/launcher: submitit_local
 
+# lowcostrobot -----------------------------------------
+residual: false
+
+lowcostrobot:
+    robot_observation_mode: joint
+    cube_vel: False
+    
+    kwargs:
+        max_episode_steps: 50
+
+        observation_mode: state
+        action_mode: joint
+        reward_type: dense
+
+        block_gripper: True
+        distance_threshold: 0.05
+        cube_xy_range: 0.3
+
+        n_substeps: 20
+        render_mode: null
+
+        # only for PushCube-v0
+        target_xy_range: 0.3
+        simulation_timestep: 0.002    
+# ------------------------------------------------------
+
 # environment
-task: dog-run
+task: PushCube-v0
 obs: state
 episodic: false
 
