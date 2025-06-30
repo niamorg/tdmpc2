@@ -28,6 +28,10 @@ class WorldModel(nn.Module):
 		self._termination = layers.mlp(cfg.latent_dim + cfg.task_dim, 2*[cfg.mlp_dim], 1) if cfg.episodic else None
 		self._pi = layers.mlp(cfg.latent_dim + cfg.task_dim, 2*[cfg.mlp_dim], 2*cfg.action_dim)
 		self._Qs = layers.Ensemble([layers.mlp(cfg.latent_dim + cfg.action_dim + cfg.task_dim, 2*[cfg.mlp_dim], max(cfg.num_bins, 1), dropout=cfg.dropout) for _ in range(cfg.num_q)])
+
+		self.ee_action_scaler = nn.Linear(1,1, bias=False)
+		self.ee_action_scaler.weight.data.fill_(0.05)
+
 		self.apply(init.weight_init)
 		init.zero_([self._reward[-1].weight, self._Qs.params["2", "weight"]])
 
@@ -117,12 +121,15 @@ class WorldModel(nn.Module):
 		"""
 		if self.cfg.multitask:
 			z = self.task_emb(z, task)
-		z = torch.cat([z, a], dim=-1)
+
+		za = torch.cat([z, a], dim=-1)
 
 		if self.cfg.residual:
-			return z + self._dynamics(z)
+			next_z = torch.zeros_like(z)
+			next_z[:3] = z[:3] + self.ee_action_scaler(a)
+			return next_z + self._dynamics(za)
 		else:
-			return self._dynamics(z)
+			return self._dynamics(za)
 
 	def reward(self, z, a, task):
 		"""

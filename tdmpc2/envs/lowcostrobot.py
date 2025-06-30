@@ -11,7 +11,7 @@ class LowCostRobotWrapper(gym.Wrapper):
 
     def step(self, action):
         obs, reward, terminated, truncated, info = self.env.step(action)
-        # info['terminated'], info['truncated'] = terminated, truncated
+        info['terminated'], info['truncated'] = terminated, truncated
         return obs, reward, terminated or truncated, info
     
     def render(self, **kwargs):
