@@ -1,33 +1,29 @@
-defaults:
-    - override hydra/launcher: submitit_local
+# defaults:
+#     - override hydra/launcher: submitit_local
 
-# lowcostrobot -----------------------------------------
+env:
+    kwargs:
+        episodic: false
+        # max_episode_steps: 50
+        # observation_cameras: []
+        # - camera_front
+        # - camera_top
+    filter_keys:
+        # - joint_pos
+        # - joint_vel
+        # - ee_pos
+        # - ee_vel
+        # - cube_pos
+        # - cube_vel
+        - ee_to_cube
+        - cube_to_target
+        # - target_pos
+    # reward
+
 residual: false
 
-lowcostrobot:
-    robot_observation_mode: joint
-    cube_vel: False
-    max_episode_steps: 50
-
-    kwargs:
-        observation_mode: state
-        action_mode: joint
-        reward_type: dense
-
-        block_gripper: True
-        distance_threshold: 0.05
-        cube_xy_range: 0.3
-
-        n_substeps: 20
-        render_mode: rgb_array
-
-        # only for PushCube-v0
-        target_xy_range: 0.3
-        simulation_timestep: 0.002    
-# ------------------------------------------------------
-
 # environment
-task: PushCube-v0
+task: MyPushCube-v0
 obs: state
 episodic: false
 
@@ -114,3 +110,28 @@ action_dims: ???
 episode_lengths: ???
 seed_steps: ???
 bin_size: ???
+
+# # lowcostrobot -----------------------------------------
+#
+
+# lowcostrobot:
+#     robot_observation_mode: joint
+#     cube_vel: False
+#     max_episode_steps: 50
+
+#     kwargs:
+#         observation_mode: state
+#         action_mode: joint
+#         reward_type: dense
+
+#         block_gripper: True
+#         distance_threshold: 0.05
+#         cube_xy_range: 0.3
+
+#         n_substeps: 20
+#         render_mode: rgb_array
+
+#         # only for PushCube-v0
+#         target_xy_range: 0.3
+#         simulation_timestep: 0.002    
+# # ------------------------------------------------------
