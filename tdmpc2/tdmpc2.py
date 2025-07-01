@@ -20,15 +20,25 @@ class TDMPC2(torch.nn.Module):
 		self.cfg = cfg
 		self.device = torch.device('cuda:0')
 		self.model = WorldModel(cfg).to(self.device)
-		self.optim = torch.optim.Adam([
-			{'params': self.model._encoder.parameters(), 'lr': self.cfg.lr*self.cfg.enc_lr_scale},
-			{'params': self.model._dynamics.parameters()},
-			{'params': self.model._reward.parameters()},
-			{'params': self.model._termination.parameters() if self.cfg.episodic else []},
-			{'params': self.model._Qs.parameters()},
-			{'params': self.model._task_emb.parameters() if self.cfg.multitask else []
-			 }
-		], lr=self.cfg.lr, capturable=True)
+
+		if not cfg.no_latent:
+			self.optim = torch.optim.Adam([
+				{'params': self.model._encoder.parameters(), 'lr': self.cfg.lr*self.cfg.enc_lr_scale},
+				{'params': self.model._dynamics.parameters()},
+				{'params': self.model._reward.parameters()},
+				{'params': self.model._termination.parameters() if self.cfg.episodic else []},
+				{'params': self.model._Qs.parameters()},
+				{'params': self.model._task_emb.parameters() if self.cfg.multitask else []}
+			], lr=self.cfg.lr, capturable=True)
+		else:
+			self.optim = torch.optim.Adam([
+				{'params': self.model._dynamics.parameters()},
+				{'params': self.model._reward.parameters()},
+				{'params': self.model._termination.parameters() if self.cfg.episodic else []},
+				{'params': self.model._Qs.parameters()},
+				{'params': self.model._task_emb.parameters() if self.cfg.multitask else []}
+			], lr=self.cfg.lr, capturable=True)
+
 		self.pi_optim = torch.optim.Adam(self.model._pi.parameters(), lr=self.cfg.lr, eps=1e-5, capturable=True)
 		self.model.eval()
 		self.scale = RunningScale(cfg)
