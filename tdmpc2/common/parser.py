@@ -58,6 +58,7 @@ def parse_cfg(cfg: OmegaConf) -> OmegaConf:
 	# cfg.work_dir = Path(hydra.utils.get_original_cwd()) / 'logs' / cfg.task / str(cfg.seed) / cfg.exp_name
 	# now = dt.datetime.now()
 	# cfg.work_dir = Path(hydra.utils.get_original_cwd()) / 'outputs' / 'train' / f"{now:%Y-%m-%d}" / cfg.exp_name
+	cfg.work_dir = Path(cfg.work_dir)
 	cfg.task_title = cfg.task.replace("-", " ").title()
 	cfg.bin_size = (cfg.vmax - cfg.vmin) / (cfg.num_bins-1) # Bin size for discrete regression
 
