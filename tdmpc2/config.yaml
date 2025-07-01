@@ -64,25 +64,25 @@ max_std: 2
 temperature: 0.5
 
 # actor
-log_std_min: -10
-log_std_max: 2
+log_std_min: -10          # 4.5e-5
+log_std_max: 2            # 7.4
 entropy_coef: 1e-4
 
 # critic
-num_bins: 101
+num_bins: 101             # For critic (Q-networks) and reward model.
 vmin: -10
 vmax: +10
 
 # architecture
-model_size: ???
+model_size: ???           # If set, will override most of the following dims.
 num_enc_layers: 2
 enc_dim: 256
-num_channels: 32
+num_channels: 32          # Conv2D related.
 mlp_dim: 512
 latent_dim: 512
-task_dim: 96
+task_dim: 96              # Set to 0 if "task" is a not a set of tasks.
 num_q: 5
-dropout: 0.01
+dropout: 0.01             # Only for the first layer of the Q-networks.
 simnorm_dim: 8
 
 # logging
