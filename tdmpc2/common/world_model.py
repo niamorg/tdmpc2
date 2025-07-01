@@ -17,13 +17,17 @@ class WorldModel(nn.Module):
 	def __init__(self, cfg):
 		super().__init__()
 		self.cfg = cfg
+
+		if cfg.latent_dim == 0:
+			cfg.latent_dim, = cfg.obs_shape['state']
+
 		if cfg.multitask:
 			self._task_emb = nn.Embedding(len(cfg.tasks), cfg.task_dim, max_norm=1)
 			self.register_buffer("_action_masks", torch.zeros(len(cfg.tasks), cfg.action_dim))
 			for i in range(len(cfg.tasks)):
 				self._action_masks[i, :cfg.action_dims[i]] = 1.
-		self._encoder = layers.enc(cfg) if not cfg.no_latent else None
-		self._dynamics = layers.mlp(cfg.latent_dim + cfg.action_dim + cfg.task_dim, 2*[cfg.mlp_dim], cfg.latent_dim, act=layers.SimNorm(cfg) if not cfg.no_latent else None)
+		self._encoder = layers.enc(cfg) if cfg.latent_dim > 0 else None
+		self._dynamics = layers.mlp(cfg.latent_dim + cfg.action_dim + cfg.task_dim, 2*[cfg.mlp_dim], cfg.latent_dim, act=layers.SimNorm(cfg) if cfg.latent_dim > 0 else None)
 		self._reward = layers.mlp(cfg.latent_dim + cfg.action_dim + cfg.task_dim, 2*[cfg.mlp_dim], max(cfg.num_bins, 1))
 		self._termination = layers.mlp(cfg.latent_dim + cfg.task_dim, 2*[cfg.mlp_dim], 1) if cfg.episodic else None
 		self._pi = layers.mlp(cfg.latent_dim + cfg.task_dim, 2*[cfg.mlp_dim], 2*cfg.action_dim)
@@ -109,7 +113,7 @@ class WorldModel(nn.Module):
 		Encodes an observation into its latent representation.
 		This implementation assumes a single state-based observation.
 		"""
-		if self.cfg.no_latent:
+		if self.cfg.latent_dim == 0:
 			return obs
 
 		if self.cfg.multitask:

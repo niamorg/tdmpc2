@@ -20,7 +20,6 @@ env:
         # - target_pos
     # reward
 
-no_latent: false
 residual: false
 
 # environment
