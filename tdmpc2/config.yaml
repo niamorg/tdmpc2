@@ -20,6 +20,7 @@ env:
         # - target_pos
     # reward
 
+encoder: true
 residual: false
 
 # environment
@@ -78,8 +79,8 @@ num_enc_layers: 2
 enc_dim: 256
 num_channels: 32          # Conv2D related.
 mlp_dim: 512
-latent_dim: 512
-task_dim: 96              # Set to 0 if "task" is a not a set of tasks.
+latent_dim: 512           # If encoder is false, no encoder is used (raw state) and latent_dim is set to the state dimension.
+task_dim: 96              # If "task" is not a set of tasks, task_dim is set to 0.
 num_q: 5
 dropout: 0.01             # Only for the first layer of the Q-networks.
 simnorm_dim: 8

@@ -21,7 +21,7 @@ class TDMPC2(torch.nn.Module):
 		self.device = torch.device('cuda:0')
 		self.model = WorldModel(cfg).to(self.device)
 
-		if cfg.latent_dim > 0:
+		if cfg.encoder:
 			self.optim = torch.optim.Adam([
 				{'params': self.model._encoder.parameters(), 'lr': self.cfg.lr*self.cfg.enc_lr_scale},
 				{'params': self.model._dynamics.parameters()},

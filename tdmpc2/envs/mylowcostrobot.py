@@ -24,6 +24,4 @@ def make_env(cfg):
     env = TerminatedTruncatedToDone(env)
     
     env.max_episode_steps = env.spec.max_episode_steps
-    # cfg.discount_max = 0.97 #0.99=tdmpc; 0.9=lerobot
-    cfg.rho = 0.7 #0.5=lerobot # TODO: increase rho for episodic tasks since termination always happens at the end of a sequence
     return env
