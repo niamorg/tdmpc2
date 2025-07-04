@@ -17,7 +17,7 @@ def make_env(cfg):
     if not cfg.task in LOWCOSTROBOT_TASKS:
         raise ValueError('Unknown task:', cfg.task)
 
-    env = gym.make(f"gym_lowcostrobot:{cfg.task}", **cfg.env["kwargs"], render_mode='rgb_array', disable_env_checker=True)
+    env = gym.make(f"gym_lowcostrobot:{cfg.task}", **cfg.env["kwargs"])
     
     env = FilterObservation(env, cfg.env["filter_keys"] + [f'image_{cam}' for cam in env.unwrapped.cameras])
     env = FlattenObservation(env)

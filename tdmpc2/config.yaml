@@ -3,11 +3,20 @@
 
 env:
     kwargs:
-        episodic: false
         # max_episode_steps: 50
+
+        episodic: false
+        block_gripper: true
+
         # observation_cameras: []
         # - camera_front
         # - camera_top
+        # action_mode: "ee"
+        # mujoco_steps: 100
+        # mujoco_timestep: 0.002
+        render_mode: rgb_array
+        # end_effector_site: "end_effector_site"
+
     filter_keys:
         # - joint_pos
         # - joint_vel
@@ -22,6 +31,9 @@ env:
 
 encoder: true
 residual: false
+# state_dependent_std: true
+# state_independent_std: 0.05    # Only used if state_dependent_std is false.
+
 
 # environment
 task: MyPushCube-v0
