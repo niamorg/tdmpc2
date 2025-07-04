@@ -63,7 +63,7 @@ def make_multitask_env(cfg):
 	return env
 	
 
-def make_env(cfg):
+def make_env(cfg, seed=None):
 	"""
 	Make an environment for TD-MPC2 experiments.
 	"""
@@ -88,4 +88,7 @@ def make_env(cfg):
 	cfg.action_dim = env.action_space.shape[0]
 	cfg.episode_length = env.max_episode_steps
 	cfg.seed_steps = max(1000, 5*cfg.episode_length)
+	if seed is not None:
+		env.reset(seed=seed)
+		env.action_space.seed(cfg.seed)
 	return env

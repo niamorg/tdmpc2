@@ -28,18 +28,19 @@ class OnlineTrainer(Trainer):
 	def eval(self):
 		"""Evaluate a TD-MPC2 agent."""
 		ep_rewards, ep_successes, ep_lengths = [], [], []
+		self.eval_env.reset(seed=self.eval_seed) # sets the seed so that the evaluation episodes are the same each time.
 		for i in range(self.cfg.eval_episodes):
-			obs, done, ep_reward, t = self.env.reset(), False, 0, 0
+			obs, done, ep_reward, t = self.eval_env.reset(), False, 0, 0
 			if self.cfg.save_video:
-				self.logger.video.init(self.env, enabled=(i==0))
+				self.logger.video.init(self.eval_env, enabled=(i==0))
 			while not done:
 				torch.compiler.cudagraph_mark_step_begin()
 				action = self.agent.act(obs, t0=t==0, eval_mode=True)
-				obs, reward, done, info = self.env.step(action)
+				obs, reward, done, info = self.eval_env.step(action)
 				ep_reward += reward
 				t += 1
 				if self.cfg.save_video:
-					self.logger.video.record(self.env)
+					self.logger.video.record(self.eval_env)
 			ep_rewards.append(ep_reward)
 			ep_successes.append(info['success'])
 			ep_lengths.append(t)

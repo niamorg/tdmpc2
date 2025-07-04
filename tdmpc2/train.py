@@ -46,13 +46,15 @@ def train(cfg: dict):
 	assert torch.cuda.is_available()
 	assert cfg.steps > 0, 'Must train for at least 1 step.'
 	cfg = parse_cfg(cfg)
-	set_seed(cfg.seed)
+	set_seed(cfg.seed)  # does not set the seed of gymnasium environments.
 	print(colored('Work dir:', 'yellow', attrs=['bold']), cfg.work_dir)
 
 	trainer_cls = OfflineTrainer if cfg.multitask else OnlineTrainer
 	trainer = trainer_cls(
 		cfg=cfg,
-		env=make_env(cfg),
+		env=make_env(cfg, seed=cfg.seed),    # sets the seed of the environment (env + action space).
+		eval_env=make_env(cfg, seed=None),   # will be seeded at each new evaluation with `eval_seed`.		
+		eval_seed=cfg.seed + 1,
 		agent=TDMPC2(cfg),
 		buffer=Buffer(cfg),
 		logger=Logger(cfg),
