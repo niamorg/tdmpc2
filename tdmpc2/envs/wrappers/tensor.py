@@ -31,8 +31,8 @@ class TensorWrapper(gym.Wrapper):
 			obs = self._try_f32_tensor(obs)
 		return obs
 
-	def reset(self, task_idx=None):
-		return self._obs_to_tensor(self.env.reset())
+	def reset(self, task_idx=None, seed: int | None = None, options: dict | None = None):
+		return self._obs_to_tensor(self.env.reset(seed=seed, options=options))
 
 	def step(self, action):
 		obs, reward, done, info = self.env.step(action.numpy())
