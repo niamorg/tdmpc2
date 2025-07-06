@@ -3,7 +3,7 @@
 
 env:
     kwargs:
-        # max_episode_steps: 50
+        max_episode_steps: 25
 
         episodic: false
         block_gripper: true
