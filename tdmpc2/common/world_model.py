@@ -132,7 +132,7 @@ class WorldModel(nn.Module):
 		za = torch.cat([z, a], dim=-1)
 
 		if not self.cfg.encoder and self.cfg.residual:
-			next_ee_pos = z[...,:3] + self.cfg.action_scaling * self.ee_action_scaler(a)
+			next_ee_pos = z[...,:3] + self.cfg.action_scaling * a #self.ee_action_scaler(a)
 			next_z = torch.cat([next_ee_pos, torch.zeros_like(z[...,3:])], dim=-1)
 			return next_z + self._dynamics(za)
 		elif self.cfg.full_residual:
