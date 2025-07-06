@@ -4,8 +4,8 @@ from gymnasium.wrappers import FilterObservation, FlattenObservation
 LOWCOSTROBOT_TASKS = ['MyPushCube-v0', 'MyReachCube-v0']
 
 class TerminatedTruncatedToDone(gym.Wrapper):
-    def reset(self):
-        return self.env.reset()[0]
+    def reset(self, seed=None, options=None):
+        return self.env.reset(seed=seed, options=options)[0]
 
     def step(self, action):
         obs, reward, terminated, truncated, info = self.env.step(action)
