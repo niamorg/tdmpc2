@@ -29,11 +29,14 @@ env:
         # - target_pos
     # reward
 
+# ------------------------
 encoder: true
-residual: false
+residual: false                  # Ignored if encoder is true.
+action_scaling: 0.0              # Ignored if encoder is true.
+full_residual: false             # Ignored if encoder is false and residual is true.
 # state_dependent_std: true
-# state_independent_std: 0.05    # Only used if state_dependent_std is false.
-
+# state_independent_std: 0.05    # Ignored if state_dependent_std is true.
+# ------------------------
 
 # environment
 task: MyPushCube-v0
