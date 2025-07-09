@@ -95,7 +95,7 @@ class VideoRecorder:
 		if self.enabled:
 			self.frames.append(env.render())
 
-	def save(self, step, key='videos/eval_video'):
+	def save(self, step, key='eval/video'):
 		if self.enabled and len(self.frames) > 0:
 			frames = np.stack(self.frames)
 			return self._wandb.log(
@@ -138,8 +138,9 @@ class Logger:
 		)
 		print(colored("Logs will be synced with wandb.", "blue", attrs=["bold"]))
 		self._wandb = wandb
+		fps = round(1 / (cfg.env.kwargs.mujoco_timestep * cfg.env.kwargs.mujoco_steps))
 		self._video = (
-			VideoRecorder(cfg, self._wandb)
+			VideoRecorder(cfg, self._wandb, fps=fps)
 			if self._wandb and cfg.save_video
 			else None
 		)

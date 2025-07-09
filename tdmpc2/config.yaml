@@ -12,8 +12,8 @@ env:
         # - camera_front
         # - camera_top
         # action_mode: "ee"
-        # mujoco_steps: 100
-        # mujoco_timestep: 0.002
+        mujoco_steps: 100
+        mujoco_timestep: 0.002
         render_mode: rgb_array
         # end_effector_site: "end_effector_site"
 
